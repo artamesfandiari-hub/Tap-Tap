@@ -1,1 +1,377 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
 
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
+  >
+
+  <meta
+    name="theme-color"
+    content="#101014"
+  >
+
+  <title>Tap-Tap</title>
+
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+  <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+
+  <main id="app">
+
+    <section id="home-screen" class="screen active">
+
+      <div class="brand">
+        <div class="brand-icon">⚡</div>
+
+        <h1>TAP-TAP</h1>
+
+        <p>
+          ۱۰ ثانیه وقت داری.<br>
+          ببین چند Tap می‌تونی بزنی.
+        </p>
+      </div>
+
+      <div class="glass-menu">
+
+        <button
+          id="create-room-btn"
+          class="glass-button primary"
+        >
+          <span>🎮</span>
+          <strong>ساخت بازی</strong>
+        </button>
+
+        <button
+          id="join-room-btn"
+          class="glass-button"
+        >
+          <span>🔑</span>
+          <strong>ورود با کد</strong>
+        </button>
+
+        <button
+          id="stats-btn"
+          class="glass-button"
+        >
+          <span>📊</span>
+          <strong>آمار من</strong>
+        </button>
+
+        <button
+          id="leaderboard-btn"
+          class="glass-button"
+        >
+          <span>🏆</span>
+          <strong>رتبه‌بندی</strong>
+        </button>
+
+        <button
+          id="support-btn"
+          class="glass-button"
+        >
+          <span>🛟</span>
+          <strong>پشتیبانی</strong>
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <section
+      id="lobby-screen"
+      class="screen"
+    >
+
+      <div class="top-bar">
+
+        <button
+          id="lobby-back-btn"
+          class="icon-button"
+        >
+          ‹
+        </button>
+
+        <h2>Lobby</h2>
+
+      </div>
+
+      <div class="room-card glass-panel">
+
+        <small>ROOM CODE</small>
+
+        <div class="room-code-row">
+
+          <strong id="room-code">
+            ------
+          </strong>
+
+          <button
+            id="copy-code-btn"
+            class="small-button"
+          >
+            کپی
+          </button>
+
+        </div>
+
+        <button
+          id="share-room-btn"
+          class="share-button"
+        >
+          🔗 دعوت دوستان
+        </button>
+
+      </div>
+
+      <div class="players-panel glass-panel">
+
+        <div class="panel-title">
+          بازیکنان
+          <span id="player-count">
+            0/6
+          </span>
+        </div>
+
+        <div id="players-list"></div>
+
+      </div>
+
+      <button
+        id="start-game-btn"
+        class="glass-button primary big"
+        disabled
+      >
+        ⚡ شروع بازی
+      </button>
+
+      <p
+        id="lobby-message"
+        class="message"
+      ></p>
+
+    </section>
+
+
+    <section
+      id="game-screen"
+      class="screen"
+    >
+
+      <div class="game-header">
+
+        <div>
+          <small>TIME</small>
+          <strong id="game-time">
+            10.0
+          </strong>
+        </div>
+
+        <div>
+          <small>SCORE</small>
+          <strong id="game-score">
+            0
+          </strong>
+        </div>
+
+      </div>
+
+      <div
+        id="countdown"
+        class="countdown"
+      ></div>
+
+      <button
+        id="tap-button"
+        class="tap-button"
+      >
+        TAP
+      </button>
+
+    </section>
+
+
+    <section
+      id="result-screen"
+      class="screen"
+    >
+
+      <div class="result-header">
+        <span>🏆</span>
+        <h2>نتیجه بازی</h2>
+      </div>
+
+      <div
+        id="results-list"
+        class="results-list glass-panel"
+      ></div>
+
+      <button
+        id="back-home-btn"
+        class="glass-button primary"
+      >
+        🏠 صفحه اصلی
+      </button>
+
+    </section>
+
+
+    <section
+      id="stats-screen"
+      class="screen"
+    >
+
+      <div class="top-bar">
+
+        <button
+          id="stats-back-btn"
+          class="icon-button"
+        >
+          ‹
+        </button>
+
+        <h2>آمار من</h2>
+
+      </div>
+
+      <div class="stats-grid">
+
+        <div class="stat-card glass-panel">
+          <span>🎮</span>
+          <small>بازی‌ها</small>
+          <strong id="stat-games">0</strong>
+        </div>
+
+        <div class="stat-card glass-panel">
+          <span>🏆</span>
+          <small>بردها</small>
+          <strong id="stat-wins">0</strong>
+        </div>
+
+        <div class="stat-card glass-panel">
+          <span>💀</span>
+          <small>باخت‌ها</small>
+          <strong id="stat-losses">0</strong>
+        </div>
+
+        <div class="stat-card glass-panel">
+          <span>📈</span>
+          <small>درصد برد</small>
+          <strong id="stat-winrate">0%</strong>
+        </div>
+
+        <div class="stat-card glass-panel">
+          <span>⚡</span>
+          <small>مجموع امتیاز</small>
+          <strong id="stat-total">0</strong>
+        </div>
+
+        <div class="stat-card glass-panel">
+          <span>🔥</span>
+          <small>بهترین امتیاز</small>
+          <strong id="stat-best">0</strong>
+        </div>
+
+        <div class="stat-card glass-panel">
+          <span>👆</span>
+          <small>بیشترین Tap</small>
+          <strong id="stat-taps">0</strong>
+        </div>
+
+        <div class="stat-card glass-panel">
+          <span>👑</span>
+          <small>بهترین Streak</small>
+          <strong id="stat-streak">0</strong>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <section
+      id="leaderboard-screen"
+      class="screen"
+    >
+
+      <div class="top-bar">
+
+        <button
+          id="leaderboard-back-btn"
+          class="icon-button"
+        >
+          ‹
+        </button>
+
+        <h2>🏆 رتبه‌بندی</h2>
+
+      </div>
+
+      <div
+        id="leaderboard-list"
+        class="leaderboard-list glass-panel"
+      ></div>
+
+    </section>
+
+
+    <div
+      id="join-modal"
+      class="modal hidden"
+    >
+
+      <div class="modal-box glass-panel">
+
+        <button
+          id="close-join-modal"
+          class="modal-close"
+        >
+          ×
+        </button>
+
+        <h2>ورود به بازی</h2>
+
+        <p>
+          کد ۶ رقمی اتاق را وارد کن.
+        </p>
+
+        <input
+          id="room-code-input"
+          type="text"
+          inputmode="text"
+          maxlength="6"
+          autocomplete="off"
+          placeholder="A7K9P2"
+        >
+
+        <button
+          id="confirm-join-btn"
+          class="glass-button primary"
+        >
+          ورود
+        </button>
+
+        <p
+          id="join-error"
+          class="error"
+        ></p>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <script src="./api.js"></script>
+  <script src="./game.js"></script>
+  <script src="./lobby.js"></script>
+  <script src="./app.js"></script>
+
+</body>
+</html>
